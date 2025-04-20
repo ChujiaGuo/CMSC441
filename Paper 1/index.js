@@ -1,6 +1,8 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet')
 const { JWT } = require('google-auth-library')
 
+// Just Google API Stuff
+// Please ignore this, I did not push the private keys onto Git
 const keys = require("../../key.json")
 const serviceAccountAuth = new JWT({
     email: keys.client_email,
@@ -10,6 +12,7 @@ const serviceAccountAuth = new JWT({
 const doc = new GoogleSpreadsheet('1xIHzhsxO7qM2iLxzh6rhyiLmLH_YJc1vPn3-GecmK5E', serviceAccountAuth)
 
 
+// Generates an array of length `len`
 function generateArray(len = 100) {
     return Array.from({ length: len }, () => Math.floor(Math.random() * len))
 }
@@ -90,6 +93,8 @@ function checkSorted(arr) {
 }
 
 function runTests(n = 100) {
+    // Sets up and runs tests
+    // Returns an array of times
     let start, end;
     let insertion, selection, merge, quick
     var initialArray = generateArray(n)
@@ -134,6 +139,7 @@ async function main() {
     const mergeSheet = doc.sheetsByIndex[2]
     const quickSheet = doc.sheetsByIndex[3]
 
+    // Setting up tests
     let avg_data = { 100: [], 1000: [], 10000: [] }
     let testCases = [100, 250, 500, 1000, 2500, 5000, 10000, 15000, 25000, 50000]
 
@@ -154,6 +160,7 @@ async function main() {
             sum_data[3] += (raw_data[3] / 100)
 
         }
+        // Writing tests to Google Sheet
         await insertionSheet.addRow([testCases[i], sum_data[0], j])
         await selectionSheet.addRow([testCases[i], sum_data[1], j])
         await mergeSheet.addRow([testCases[i], sum_data[2], j])
